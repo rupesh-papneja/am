@@ -7,7 +7,7 @@ Steps to run the application:
 
 To test individual services:
 1. Run the dynamodb container locally using the below the command.
-`docker run -p 8000:8000 --name dynamodb --env AWS_ACCESS_KEY_ID=default --env AWS_SECRET_ACCESS_KEY=default --env AWS_REGION=localhost --env DYNAMO_ENDPOINT=http://localhost:8000 -d -v /mnt/share/data:/data --publish-all prdocker/samples:dynamodb`
+`docker run -p 8000:8000 --name dynamodb --env AWS_ACCESS_KEY_ID=default --env AWS_SECRET_ACCESS_KEY=default --env AWS_REGION=localhost --env DYNAMO_ENDPOINT=http://localhost:8000 -d --publish-all prdocker/samples:dynamodb`
 2. npm install
 3. npm test
 4. docker stop dynamodb && docker rm dynamodb 
