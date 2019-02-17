@@ -1,0 +1,6 @@
+FROM osixia/phpldapadmin:0.7.1
+
+COPY server.crt /container/service/phpldapadmin/assets/apache2/certs
+COPY server.key /container/service/phpldapadmin/assets/apache2/certs
+
+RUN /container/tool/install-service

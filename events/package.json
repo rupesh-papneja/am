@@ -1,0 +1,41 @@
+{
+  "name": "events",
+  "version": "0.0.1",
+  "description": "events service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "eslint . && nyc node test && nyc report --reporter=lcov"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.253.1",
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
+    "compression": "^1.7.2",
+    "connect": "^3.6.6",
+    "cuid": "^2.1.1",
+    "js-yaml": "^3.12.0",
+    "request": "^2.87.0",
+    "swagger-tools": "^0.10.3",
+    "moment": "^2.22.2",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "nock": "^10.0.6",
+    "nyc": "^11.9.0",
+    "supertest": "^1.2.0",
+    "tape": "^4.9.1"
+  },
+  "keywords": [
+    "events service",
+    "events",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC"
+}

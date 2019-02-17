@@ -1,0 +1,1360 @@
+{
+	"info": {
+		"_postman_id": "5f0ea3ca-91fc-412a-adff-96c25acd0a16",
+		"name": "am",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2eb7a45c-50bc-4f28-b502-bf2cab1d9b15",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let token = jsonData.token",
+							"pm.environment.set(\"token\", token);",
+							"pm.environment.set(\"now\", Date.now());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\":\"web\",\n\t\"password\": \"d41d8cd98f00b204e9800998ecf8427e\",\n\t\"entity\": \"application\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9009/api/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9009",
+					"path": [
+						"api",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "042647da-2fac-4337-8617-b4cfb653a3db",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9009/api/token/verify",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9009",
+					"path": [
+						"api",
+						"token",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "events-heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d7928e9-96f2-4bb2-8bda-d0ddd153aee8",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let message = jsonData.message;",
+							"let version = jsonData.version;",
+							"",
+							"pm.test(\"message\", function () {",
+							"    message === \"server running\";",
+							"});",
+							"",
+							"pm.test(\"version\", function () {",
+							"     version === '0.0.1';",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/heartbeat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let id = jsonData.id;",
+							"pm.environment.set(\"id\", id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"eventName\": \"Kids Party\",\n  \"eventType\": \"party\",\n  \"basePrice\": 220.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"eventName\": \"Kids Party\",\n  \"eventType\": \"party\",\n  \"basePrice\": 230.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search-both",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event?eventName=Kids Party&eventType=party",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event"
+					],
+					"query": [
+						{
+							"key": "eventName",
+							"value": "Kids Party"
+						},
+						{
+							"key": "eventType",
+							"value": "party"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search-name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event?eventName=Kids Party",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event"
+					],
+					"query": [
+						{
+							"key": "eventName",
+							"value": "Kids Party"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search-type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event?eventType=party",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event"
+					],
+					"query": [
+						{
+							"key": "eventType",
+							"value": "party"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaigns-heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d7928e9-96f2-4bb2-8bda-d0ddd153aee8",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let message = jsonData.message;",
+							"let version = jsonData.version;",
+							"",
+							"pm.test(\"message\", function () {",
+							"    message === \"server running\";",
+							"});",
+							"",
+							"pm.test(\"version\", function () {",
+							"     version === '0.0.1';",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign/heartbeat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaigns-404-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign-create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let id = jsonData.id;",
+							"pm.environment.set(\"cid\", id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"campaignName\": \"Promotions 2019\",\n    \"description\": \"Start of the year promotions 2019\",\n    \"startDate\": \"2019-01-05\",\n    \"endDate\": \"2019-04-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign-200 - get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign/{{cid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign",
+						"{{cid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign-update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"campaignName\": \"Promotions 2019\",\n    \"description\": \"Start of the year promotions 2019\",\n    \"startDate\": \"2019-01-05\",\n    \"endDate\": \"2019-06-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign/{{cid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign",
+						"{{cid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign-search-name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign?campaignName=Promotions 2019",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign"
+					],
+					"query": [
+						{
+							"key": "campaignName",
+							"value": "Promotions 2019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offers-heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d7928e9-96f2-4bb2-8bda-d0ddd153aee8",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let message = jsonData.message;",
+							"let version = jsonData.version;",
+							"",
+							"pm.test(\"message\", function () {",
+							"    message === \"server running\";",
+							"});",
+							"",
+							"pm.test(\"version\", function () {",
+							"     version === '0.0.1';",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer/heartbeat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offers-404-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer-create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let id = jsonData.id;",
+							"pm.environment.set(\"oid\", id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"campaignId\": \"{{cid}}\",\n\t\"description\": \"Start of the year promotions 2019 Offer fixed price\",\n\t\"quantity\": 5,\n\t\"offerType\": \"discountOnItemsPrice\",\n\t\"percentage\": 0.2,\n\t\"itemNumbers\": [5]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer-200 - get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer/{{oid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer",
+						"{{oid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer-update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"campaignId\": \"{{cid}}\",\n\t\"description\": \"Start of the year promotions 2019 Offer fixed price\",\n\t\"quantity\": 5,\n\t\"offerType\": \"discountOnItemsPrice\",\n\t\"percentage\": 0.1,\n\t\"itemNumbers\": [5]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer/{{oid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer",
+						"{{oid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer-search-campaignId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer?campaignId={{cid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer"
+					],
+					"query": [
+						{
+							"key": "campaignId",
+							"value": "{{cid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer-delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9003/api/offer/{{oid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"api",
+						"offer",
+						"{{oid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign-delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9002/api/campaign/{{cid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"api",
+						"campaign",
+						"{{cid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e98a634c-2c07-4e1b-a88c-30e5b10629be",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "55b18c55-c3d5-42ef-b16b-58bd5c94ab52",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

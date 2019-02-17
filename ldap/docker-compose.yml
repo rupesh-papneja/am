@@ -1,0 +1,44 @@
+version: '3'
+services:
+  openldap:
+    image: prdocker:ldap
+    container_name: openldap
+    environment:
+      LDAP_TLS: 'true'
+      LDAP_TLS_CRT_FILENAME: 'server.crt'
+      LDAP_TLS_KEY_FILENAME: 'server.key'
+      LDAP_TLS_CA_CRT_FILENAME: 'server.crt'
+      LDAP_ORGANISATION: "prdocker"
+      LDAP_DOMAIN: "prdocker.com.au"
+      LDAP_BASE_DN: "dc=prdocker,dc=com,dc=au"
+      LDAP_ADMIN_PASSWORD: "TNkz4aPbW&r5GDmJ"
+      LDAP_TLS_CIPHER_SUITE: "NORMAL"
+      LDAP_TLS_VERIFY_CLIENT: "allow"
+      LDAP_BACKUP_CONFIG_CRON_EXP: "30 * * * *"
+      LDAP_BACKUP_DATA_CRON_EXP: "30 * * * *"
+    tty: true
+    stdin_open: true
+    command: --copy-service
+    volumes:
+     # - /mnt/share/ldap/data:/var/lib/ldap
+     - /mnt/share/ldap/backup:/data/backup
+     # - /mnt/share/ldap/slapd.d:/etc/ldap/slapd.d
+     # - /mnt/share/ldap/certs:/container/service/slapd/assets/certs/
+    ports:
+     - "389:389"
+     - "636:636"
+    hostname: "ldap-server"
+  phpldapadmin:
+    image: prdocker:phpldapadmin
+    container_name: phpldapadmin
+    ports:
+     - "8080:80"
+     - "6443:443"
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: 'true'
+      PHPLDAPADMIN_HTTPS_CRT_FILENAME: "server.crt"
+      PHPLDAPADMIN_HTTPS_KEY_FILENAME: "server.key"
+      PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME: "server.crt" 
+    depends_on:
+     - openldap

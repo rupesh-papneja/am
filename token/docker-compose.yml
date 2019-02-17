@@ -1,0 +1,70 @@
+version: '3'
+services:
+  token:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: token
+    image: prdocker:token
+    ports:
+     - "9009:9009"
+    environment:
+      LDAP_ADMIN_DN: "cn=admin,dc=prdocker,dc=com,dc=au"
+      LDAP_ADMIN_PWD: "TNkz4aPbW&r5GDmJ"
+      LDAP_URL: "ldaps://openldap:636"
+      LDAP_CERT_PATH: "/home/service/server.crt"
+      LDAP_KEY_PATH: "/home/service/server.key"
+      LDAP_IGNORE_SSL: "TRUE"
+      DEBUG_LEVEL: "7"
+      TIMEOUT: "5000"
+      RESULT_SIZE: "100"
+      PORT: 9009
+      THREADS: 2
+      DP: "d41d8cd98f00b204e9800998ecf8427e"
+      TOKEN_SIGNER: "prdocker.com.au-TTTTTT"
+      ALLOW_ALL_ORIGINS: "TRUE"
+    depends_on:
+      - openldap
+      - phpldapadmin
+  phpldapadmin:
+    image: prdocker:phpldapadmin
+    container_name: phpldapadmin
+    ports:
+     - "8080:80"
+     - "6443:443"
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: 'true'
+      PHPLDAPADMIN_HTTPS_CRT_FILENAME: "server.crt"
+      PHPLDAPADMIN_HTTPS_KEY_FILENAME: "server.key"
+      PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME: "server.crt" 
+    depends_on:
+     - openldap
+  openldap:
+    image: prdocker:ldap
+    container_name: openldap
+    environment:
+      LDAP_TLS: 'true'
+      LDAP_TLS_CRT_FILENAME: 'server.crt'
+      LDAP_TLS_KEY_FILENAME: 'server.key'
+      LDAP_TLS_CA_CRT_FILENAME: 'server.crt'
+      LDAP_ORGANISATION: "prdocker"
+      LDAP_LOG_LEVEL: 0
+      LDAP_DOMAIN: "prdocker.com.au"
+      LDAP_BASE_DN: "dc=prdocker,dc=com,dc=au"
+      LDAP_ADMIN_PASSWORD: "TNkz4aPbW&r5GDmJ"
+      LDAP_TLS_CIPHER_SUITE: "NORMAL"
+      LDAP_TLS_VERIFY_CLIENT: "try"
+      LDAP_BACKUP_CONFIG_CRON_EXP: "30 * * * *"
+      LDAP_BACKUP_DATA_CRON_EXP: "30 * * * *"
+    tty: true
+    stdin_open: true
+    volumes:
+     # - /mnt/share/ldap/data:/var/lib/ldap
+     - /mnt/share/ldap/backup:/data/backup
+     # - /mnt/share/ldap/slapd.d:/etc/ldap/slapd.d
+     # - /mnt/share/ldap/certs:/container/service/slapd/assets/certs/
+    ports:
+     - "389:389"
+     - "636:636"
+    hostname: "ldap-server"
