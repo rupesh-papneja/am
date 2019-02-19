@@ -1,0 +1,11 @@
+package com.am.rules.definitions;
+dialect  "mvel"
+
+rule "Sample rule"
+    agenda-group "sample"
+    auto-focus true
+    when
+        eval(true)
+    then
+        System.out.println("true")
+end

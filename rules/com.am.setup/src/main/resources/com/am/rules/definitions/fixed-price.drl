@@ -1,0 +1,16 @@
+package com.am.rules.definitions;
+
+import com.am.beans.Transaction;
+import java.math.BigDecimal;
+
+dialect  "mvel"
+
+rule "Calculate fixed discount"
+    agenda-group "fixed discount"
+    auto-focus true
+    no-loop true
+    when
+        e: Transaction(quantity > 2)
+    then
+        System.out.println("can apply fixed price discount!!")
+end
