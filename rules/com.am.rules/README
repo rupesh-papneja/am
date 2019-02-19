@@ -3,21 +3,3 @@ PreRequisites:
  1. java and maven is installed in the system.
  2. Maven is configured to access the maven central and jboss public repository.
  3. JAVA_HOME, M2_HOME, and PATH environment variables are properly set.
-
-Instruction to build and run the tests:
- 1. set EMPLOYEE_RECORDS_FILE=         # unset if environment variable EMPLOYEE_RECORDS_FILE is set, tests use local file.
- 2. mvn clean install                  # builds and packages the application
-
-Instructions to run the program
- 1. set EMPLOYEE_RECORDS_FILE=<location of the csv file>
- 2. mvn exec:java
-
-Please note that the application generates a pdf file for each valid record in the csv file provided.
-Each PDF generated is protected by password. The password is first name + last name of the employee in lower case.
-
-For example if the first name and last name of the employee is Ryan Chen,
-the pdf file generated is ryanchen.pdf
-the password is ryanchen
-
-There is a regular expression which validates the lines read from the file, it it contains any special characters,
-the line or the record is discarded!!.
