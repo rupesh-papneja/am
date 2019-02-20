@@ -47,7 +47,7 @@ class Service {
       applicationContext.logger.error(req.context, e);
       res.statusCode = 500;
       let n = 'ServerError';
-      if (e.message === 'Invalid campaign') {
+      if (e.message === 'Invalid event') {
         n = 'NotFound'
         res.statusCode = 404;
       }

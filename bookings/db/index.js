@@ -96,24 +96,6 @@ class DB {
       });
     })
   }
-  delete(id) {
-    let self = this
-    return new Promise((resolve, reject) => {
-      let params = {
-        TableName: applicationContext.db.model.TableName,
-        Key: {
-          'id': id
-        }
-      }
-      self.docClient.delete(params, function(err, data) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      });
-    })
-  }
   get(id) {
     let self = this
     return new Promise((resolve, reject) => {
