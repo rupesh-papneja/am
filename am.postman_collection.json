@@ -545,52 +545,6 @@
 			"response": []
 		},
 		{
-			"name": "delete",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(204);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "x-auth-token",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:9001/api/event/{{id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9001",
-					"path": [
-						"api",
-						"event",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "campaigns-heartbeat",
 			"event": [
 				{
@@ -1237,6 +1191,322 @@
 							"key": "campaignId",
 							"value": "{{cid}}"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings-heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d7928e9-96f2-4bb2-8bda-d0ddd153aee8",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let message = jsonData.message;",
+							"let version = jsonData.version;",
+							"",
+							"pm.test(\"message\", function () {",
+							"    message === \"server running\";",
+							"});",
+							"",
+							"pm.test(\"version\", function () {",
+							"     version === '0.0.1';",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9004/api/booking/heartbeat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9004",
+					"path": [
+						"api",
+						"booking",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings-404-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9004/api/booking/12345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9004",
+					"path": [
+						"api",
+						"booking",
+						"12345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "booking-create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f860f045-aac9-4585-8a6b-bbdc948918ed",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let id = jsonData.id;",
+							"pm.environment.set(\"bid\", id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"eventId\": \"{{id}}\",\n\t\"quantity\": 5\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9004/api/booking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9004",
+					"path": [
+						"api",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "booking-200 - get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9004/api/booking/{{bid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9004",
+					"path": [
+						"api",
+						"booking",
+						"{{bid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "booking-search-eventId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1b5e76e4-e04d-4bab-bd65-336d4e9a2ead",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9004/api/booking?eventId={{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9004",
+					"path": [
+						"api",
+						"booking"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37c5b495-bec4-4b36-ac16-1d7c4d2b77e7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/event/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"event",
+						"{{id}}"
 					]
 				}
 			},

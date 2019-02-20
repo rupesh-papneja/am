@@ -12,7 +12,7 @@ services:
      - LOGLEVEL=debug
      - DB_HOST=dynamodb
      - TOKEN_SERVICE=http://token:9009/api/token/verify
-     - EVENTS_SERVICE=http://events:9002/api/event
+     - EVENTS_SERVICE=http://events:9001/api/event
      - ALLOW_ALL_ORIGINS=true 
     image: prdocker/samples:bookings
     ports:
