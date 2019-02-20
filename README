@@ -4,6 +4,8 @@ Steps to run the application:
 
 `docker exec -it openldap sh /container/script/restore-backup.sh` 
 
+The above command sets up the test user.
+3. Run the postman collection
 
 To test individual services:
 1. Run the dynamodb container locally using the below the command.
