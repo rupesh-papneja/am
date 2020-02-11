@@ -1,3 +1,22 @@
+# The event management application
+
+The application can be used for event management purposes.
+
+There core microservices are bookings, campaigns, events and offers.
+
+The events have the information of the types of events (like Kids Birthday party) supported. 
+bookings saves the booking information.
+
+Time to time campaigns are launched. Each campaign will have offers.
+
+The rules application contains a rules engine created in java using drools framework. 
+The rules application will be developed further to support multiple rules which will allow to calculated cost based on campaigns and offers.
+
+The token service is used to authentication and authorization.
+An ldap server is setup with user information. The token service written in C, interacts with ldap server to generate client token
+which is used to call the services. The service supports generation of client token and verification of the client credentials.
+
+
 Steps to run the application:
 1. use docker compose to run the service together `docker-compose up`
 2. After the services have started run the below command
