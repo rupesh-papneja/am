@@ -13,7 +13,7 @@ The rules application contains a rules engine created in java using drools frame
 The rules application will be developed further to support multiple rules which will allow to calculate cost based on campaigns and offers.
 
 The token service is used to authentication and authorization.
-An ldap server is setup with user information. The token service written in C, interacts with ldap server to generate client token
+An ldap server is setup with user information. The token service written in C++, interacts with ldap server to generate client token
 which is used to call the services. The service supports generation of client token and verification of the client credentials.
 
 
